@@ -130,17 +130,3 @@ inoremap <expr> > cavemanparens#ClosePair('<>')
 inoremap <expr> " cavemanparens#HandleAmbiguousPair('""')
 inoremap <expr> ' cavemanparens#HandleAmbiguousPair("''")
 
-
-"Helpers used to surround blocks of text with various pairs
-vnoremap z( s()<Esc>hp
-vnoremap Z( s()<Esc>hp
-vnoremap z[ s[]<Esc>hp
-vnoremap Z[ s[]<Esc>hp
-vnoremap z{ s{}<Esc>hp
-vnoremap Z{ s{}<Esc>hp
-vnoremap z< s<><Esc>hp
-vnoremap Z< s<><Esc>hp
-vnoremap z' s''<Esc>hp
-vnoremap Z' s''<Esc>hp
-vnoremap z" s""<Esc>hp
-vnoremap Z" s""<Esc>hp
