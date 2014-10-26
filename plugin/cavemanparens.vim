@@ -2,7 +2,7 @@
 " File:        plugin/cavemanparens.vim
 "
 " Description: Special treatment of parens and other matchable characters.
-"              Character pairs defined in g:caveman_pairs get a matching close
+"              Character pairs defined in b:caveman_pairs get a matching close
 "              when the opening character is typed in insert mode.  Typing a
 "              close character also advances past an already-present close
 "              character.  Backspace removes both pairs if they are adjacent so
@@ -34,7 +34,10 @@ endif
 " If the character is part of a pair, insert it and its mate otherwise just
 " insert it.
 function cavemanparens#InsertPair(pair)
-    if count(g:caveman_pairs, a:pair) == 0
+    if !exists("b:caveman_pairs")
+        let b:caveman_pairs=g:caveman_pairs
+    endif
+    if count(b:caveman_pairs, a:pair) == 0
         return strpart(a:pair,0,1)
     endif
     return a:pair . "\e" . 'i'
@@ -43,8 +46,11 @@ endfunction
 
 " Advance past a closing character of a pair.
 function cavemanparens#ClosePair(pair)
+    if !exists("b:caveman_pairs")
+        let b:caveman_pairs=g:caveman_pairs
+    endif
     let s:pairsecond = strpart(a:pair,1,1)
-    if count(g:caveman_pairs, a:pair) == 0
+    if count(b:caveman_pairs, a:pair) == 0
         return s:pairsecond
     endif
     if strpart(getline('.'), col('.')-1, 1) == s:pairsecond
@@ -64,8 +70,11 @@ endfunction
 " next character advance past it otherwise treat the input character as the
 " start of a new pair.
 function cavemanparens#HandleAmbiguousPair(pair)
+    if !exists("b:caveman_pairs")
+        let b:caveman_pairs=g:caveman_pairs
+    endif
     let s:pairsecond = strpart(a:pair,1,1)
-    if count(g:caveman_pairs, a:pair) == 0
+    if count(b:caveman_pairs, a:pair) == 0
         return s:pairsecond
     endif
     if strpart(getline('.'), col('.')-1, 1) == s:pairsecond
@@ -78,8 +87,11 @@ endfunction
 
 " Delete adjacent characters if they form a pair
 function cavemanparens#DeletePair()
+    if !exists("b:caveman_pairs")
+        let b:caveman_pairs=g:caveman_pairs
+    endif
     let s:current_adjacents = strpart(getline('.'),col('.')-2, 2)
-    if count(g:caveman_pairs, s:current_adjacents) != 0
+    if count(b:caveman_pairs, s:current_adjacents) != 0
         return "\<BS>\<Del>"
     else
         return "\<BS>"
@@ -90,8 +102,11 @@ endfunction
 " For block delimiters like '{', inserting a newline directly in between will
 " open up a block indented region with the close character on its own line.
 function cavemanparens#InsertNewline()
+    if !exists("b:caveman_block_pairs")
+        let b:caveman_block_pairs=g:caveman_block_pairs
+    endif
     let s:current_adjacents = strpart(getline('.'),col('.')-2, 2)
-    if count(g:caveman_block_pairs, s:current_adjacents) != 0
+    if count(b:caveman_block_pairs, s:current_adjacents) != 0
         return "\<Del>\<CR>" . strpart(s:current_adjacents, 1, 1) . "\eO"
     else
         return "\<CR>"

@@ -1,2 +1,2 @@
-let g:caveman_pairs=['[]', '()', '{}', "''"]
-let g:caveman_block_pairs=[]
+let b:caveman_pairs=['[]', '()', '{}', "''"]
+let b:caveman_block_pairs=[]
