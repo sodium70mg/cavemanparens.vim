@@ -40,7 +40,7 @@ function cavemanparens#InsertPair(pair)
     if count(b:caveman_pairs, a:pair) == 0
         return strpart(a:pair,0,1)
     endif
-    return a:pair . "\e" . 'i'
+    return a:pair . "\<Left>"
 endfunction
 
 
@@ -54,11 +54,7 @@ function cavemanparens#ClosePair(pair)
         return s:pairsecond
     endif
     if strpart(getline('.'), col('.')-1, 1) == s:pairsecond
-        if col('.') == 1
-            return "\e" . 'a'
-        else
-            return "\e" . 'la'
-        endif
+        return "\<Right>"
     else
         return s:pairsecond
     endif
@@ -78,9 +74,9 @@ function cavemanparens#HandleAmbiguousPair(pair)
         return s:pairsecond
     endif
     if strpart(getline('.'), col('.')-1, 1) == s:pairsecond
-        return "\e" . 'la'
+        return "\<Right>"
     else
-        return a:pair . "\e" . 'i'
+        return a:pair . "\<Left>"
     endif
 endfunction
 
